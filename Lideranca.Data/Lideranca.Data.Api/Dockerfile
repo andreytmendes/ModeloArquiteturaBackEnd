@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["Lideranca.User.Authentication.Api/Lideranca.User.Authentication.Api.csproj", "Lideranca.User.Authentication.Api/"]
-RUN dotnet restore "Lideranca.User.Authentication.Api/Lideranca.User.Authentication.Api.csproj"
+COPY ["Lideranca.Data.Api/Lideranca.User.Authentication.Api.csproj", "Lideranca.Data.Api/"]
+RUN dotnet restore "Lideranca.Data.Api/Lideranca.Data.Api.csproj"
 COPY . .
 WORKDIR "/src/Lideranca.User.Authentication.Api"
-RUN dotnet build "Lideranca.User.Authentication.Api.csproj" -c Release -o /app/build
+RUN dotnet build "Lideranca.Data.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Lideranca.User.Authentication.Api.csproj" -c Release -o /app/publish
+RUN dotnet publish "Lideranca.Data.Api.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Lideranca.User.Authentication.Api.dll"]
+ENTRYPOINT ["dotnet", "Lideranca.Data.Api.dll"]
